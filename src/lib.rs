@@ -1,6 +1,8 @@
 extern crate reqwest;
 #[macro_use]
 extern crate serde_derive;
+extern crate serde_json;
+use std::io::Read;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -34,12 +36,26 @@ pub struct Error{
 #[derive(Debug)]
 pub enum Kind{
     Reqwest(reqwest::Error),
+    SerdeJson(serde_json::Error),
+    Io(std::io::Error),
     TooLongKey,
 }
 
 impl std::convert::From<reqwest::Error> for self::Error {
     fn from(e: reqwest::Error) -> Self {
         Self{ kind : Kind::Reqwest(e) }
+    }
+}
+
+impl std::convert::From<serde_json::Error> for self::Error {
+    fn from(e: serde_json::Error) -> Self {
+        Self{ kind : Kind::SerdeJson(e) }
+    }
+}
+
+impl std::convert::From<std::io::Error> for self::Error {
+    fn from(e: std::io::Error) -> Self {
+        Self{ kind : Kind::Io(e) }
     }
 }
 
@@ -53,6 +69,9 @@ pub fn get_quote<T>(lang: Lang, key: T) -> self::Result<Quote> where Option<u32>
         },
         None => format!("https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang={}",lang)
     };
-    let quote : Quote = reqwest::get(&url)?.json()?;
+    let mut content = String::new();
+    reqwest::get(&url)?.read_to_string(&mut content)?;
+    let content = content.replace("\\'","'");
+    let quote: Quote = serde_json::from_str(content.as_str())?;
     Ok(quote)
 }
