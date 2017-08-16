@@ -2,7 +2,7 @@ extern crate reqwest;
 #[macro_use]
 extern crate serde_derive;
 extern crate serde_json;
-mod error;
+pub mod error;
 use std::io::Read;
 
 #[derive(Deserialize)]
@@ -32,8 +32,20 @@ impl std::fmt::Display for Lang{
 
 pub type Result<T> = std::result::Result<T,error::Error>;
 
-/// Get quote via forismatic API.
+/// Get quote via forismatic API.  
 /// `key` must not be longer than 6 characters in string form.
+/// #Examples
+/// When you want to get quote in English and set no key :
+///
+/// ```
+/// get_quote(Lang::EN,None);
+/// ```
+///
+/// When you want to get quote in Russian and set `1000` as a key :
+///
+/// ```
+/// get_quote(Lang::RU,1000);
+/// ```
 pub fn get_quote<T>(lang: Lang, key: T) -> self::Result<Quote> where Option<u32>: From<T> {
     let url = match Option::from(key) {
         Some(k) => {
