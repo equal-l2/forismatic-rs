@@ -33,18 +33,19 @@ impl std::fmt::Display for Lang {
 pub type Result<T> = std::result::Result<T, error::Error>;
 
 /// Get quote via forismatic API.
+///
 /// `key` must not be longer than 6 characters in string form.
-/// #Examples
-/// When you want to get quote in English and set no key :
+/// # Examples
+/// To get quote in English without key :
 ///
 /// ```
-/// get_quote(Lang::EN,None);
+/// get_quote(Lang::EN, None);
 /// ```
 ///
-/// When you want to get quote in Russian and set `1000` as a key :
+/// To get quote in Russian with key `1000` :
 ///
 /// ```
-/// get_quote(Lang::RU,1000);
+/// get_quote(Lang::RU, 1000);
 /// ```
 pub fn get_quote<T>(lang: Lang, key: T) -> self::Result<Quote>
 where
