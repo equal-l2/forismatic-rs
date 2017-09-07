@@ -1,4 +1,4 @@
 # forismatic-rs
-Thin Rust wrapper for [Forismatic](https://forismatic.com/en/api/), online quote provider.
+Thin API wrapper for [Forismatic](https://forismatic.com/en/api/), an online quote provider.
 
-See `fortune` for sample.
+See `example/fortumatic` for example.

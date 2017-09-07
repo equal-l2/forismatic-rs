@@ -2,6 +2,8 @@
 name = "forismatic"
 version = "0.1.0"
 authors = ["equal-l2 <eng.equall2@gmail.com>"]
+description = "Thin API wrapper for Forismatic, an online quote provider"
+license = "MIT"
 
 [dependencies]
 reqwest = "0.7"
