@@ -10,10 +10,6 @@ pub enum Error {
     TooLongKey,
 }
 
-pub fn too_long_key() -> Error {
-    Error::TooLongKey
-}
-
 impl std::fmt::Display for Error {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match *self {

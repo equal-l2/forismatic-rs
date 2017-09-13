@@ -56,7 +56,7 @@ where
     let url = match Option::from(key) {
         Some(k) => {
             if k.to_string().len() > 6 {
-                return Err(error::too_long_key());
+                return Err(Error::TooLongKey);
             }
             format!(
                 "https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang={}&key={}",
