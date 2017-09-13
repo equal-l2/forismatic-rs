@@ -4,6 +4,7 @@ extern crate serde_derive;
 extern crate serde_json;
 pub mod error;
 use std::io::Read;
+use error::Error;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -31,7 +32,7 @@ impl std::fmt::Display for Lang {
     }
 }
 
-pub type Result<T> = std::result::Result<T, error::Error>;
+pub type Result<T> = std::result::Result<T, Error>;
 
 /// Get quote via forismatic API.
 ///
@@ -48,7 +49,7 @@ pub type Result<T> = std::result::Result<T, error::Error>;
 /// ```
 /// get_quote(Lang::RU, 1000);
 /// ```
-pub fn get_quote<T>(lang: Lang, key: T) -> self::Result<Quote>
+pub fn get_quote<T>(lang: Lang, key: T) -> Result<Quote>
 where
     Option<u32>: From<T>,
 {
@@ -71,6 +72,10 @@ where
     let mut content = String::new();
     reqwest::get(&url)?.read_to_string(&mut content)?;
     let content = content.replace("\\'", "'");
-    let quote: Quote = serde_json::from_str(content.as_str())?;
-    Ok(quote)
+    serde_json::from_str::<Quote>(content.as_str()).map_err(|e| -> Error {
+        println!("Parse Failed.");
+        println!("Please report to https://github.com/equal-l2/forismatic-rs with JSON!");
+        println!("JSON:\n{}", content);
+        e.into()
+    })
 }
