@@ -73,9 +73,9 @@ where
     reqwest::get(&url)?.read_to_string(&mut content)?;
     let content = content.replace("\\'", "'");
     serde_json::from_str::<Quote>(content.as_str()).map_err(|e| -> Error {
-        println!("Parse Failed.");
-        println!("Please report to https://github.com/equal-l2/forismatic-rs with JSON!");
-        println!("JSON:\n{}", content);
+        eprintln!("Parse Failed.");
+        eprintln!("Please report to https://github.com/equal-l2/forismatic-rs with JSON!");
+        eprintln!("JSON:\n{}", content);
         e.into()
     })
 }
