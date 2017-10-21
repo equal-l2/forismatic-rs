@@ -17,7 +17,7 @@ pub struct Quote {
 }
 
 /// Language specification.
-#[derive(Clone)]
+#[derive(Clone,Copy)]
 pub enum Lang {
     EN,
     RU,
