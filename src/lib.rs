@@ -3,7 +3,6 @@ extern crate reqwest;
 extern crate serde_derive;
 extern crate serde_json;
 pub mod error;
-use std::io::Read;
 use error::Error;
 
 #[derive(Deserialize)]
@@ -69,9 +68,7 @@ where
             lang
         ),
     };
-    let mut content = String::new();
-    reqwest::get(&url)?.read_to_string(&mut content)?;
-    let content = content.replace("\\'", "'");
+    let content = reqwest::get(&url)?.text()?.replace("\\'","'");
     serde_json::from_str::<Quote>(content.as_str()).map_err(|e| -> Error {
         eprintln!("Parse Failed.");
         eprintln!("Please report to https://github.com/equal-l2/forismatic-rs with JSON!");
