@@ -1,6 +1,6 @@
 [package]
 name = "forismatic"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["equal-l2 <eng.equall2@gmail.com>"]
 description = "Thin API wrapper for Forismatic, an online quote provider"
 license = "MIT"
