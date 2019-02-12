@@ -1,7 +1,0 @@
-[package]
-name = "fortumatic"
-version = "0.1.0"
-authors = ["equal-l2 <eng.equall2@gmail.com>"]
-
-[dependencies]
-forismatic = { path = "../../" }

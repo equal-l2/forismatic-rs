@@ -1,9 +1,10 @@
-extern crate reqwest;
-#[macro_use]
-extern crate serde_derive;
-extern crate serde_json;
+#![deny(rust_2018_idioms)]
+use reqwest;
+use serde::{self, Deserialize};
+use serde_json;
+use crate::error::Error;
+
 pub mod error;
-use error::Error;
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -16,14 +17,14 @@ pub struct Quote {
 }
 
 /// Language specification.
-#[derive(Clone,Copy)]
+#[derive(Clone, Copy)]
 pub enum Lang {
     EN,
     RU,
 }
 
 impl std::fmt::Display for Lang {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match *self {
             Lang::EN => write!(f, "en"),
             Lang::RU => write!(f, "ru"),
@@ -59,8 +60,7 @@ where
             }
             format!(
                 "https://api.forismatic.com/api/1.0/?method=getQuote&format=json&lang={}&key={}",
-                lang,
-                k
+                lang, k
             )
         }
         None => format!(
@@ -68,7 +68,7 @@ where
             lang
         ),
     };
-    let content = reqwest::get(&url)?.text()?.replace("\\'","'");
+    let content = reqwest::get(&url)?.text()?.replace("\\'", "'");
     serde_json::from_str::<Quote>(content.as_str()).map_err(|e| -> Error {
         eprintln!("Parse Failed.");
         eprintln!("Please report to https://github.com/equal-l2/forismatic-rs with JSON!");

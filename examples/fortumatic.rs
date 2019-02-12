@@ -1,5 +1,3 @@
-extern crate forismatic;
-
 fn main() {
     let quote = forismatic::get_quote(forismatic::Lang::EN, 1000).unwrap();
     println!("{}", quote.quote_text);

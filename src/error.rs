@@ -1,5 +1,5 @@
-extern crate reqwest;
-extern crate serde_json;
+use reqwest;
+use serde_json;
 use std;
 
 #[derive(Debug)]
@@ -11,7 +11,7 @@ pub enum Error {
 }
 
 impl std::fmt::Display for Error {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match *self {
             Error::Io(ref e) => write!(f, "Io Error: {}", e),
             Error::Reqwest(ref e) => write!(f, "Reqwest Error: {}", e),
