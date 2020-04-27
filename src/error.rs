@@ -1,7 +1,3 @@
-use reqwest;
-use serde_json;
-use std;
-
 #[derive(Debug)]
 pub enum Error {
     Io(std::io::Error),
@@ -22,12 +18,12 @@ impl std::fmt::Display for Error {
 }
 
 impl std::error::Error for Error {
-    fn description(&self) -> &str {
-        match *self {
-            Error::Io(ref e) => e.description(),
-            Error::Reqwest(ref e) => e.description(),
-            Error::SerdeJson(ref e) => e.description(),
-            Error::TooLongKey => "Key must not be longer than 6 chars",
+    fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+        match self {
+            Error::Io(ref e) => Some(e),
+            Error::Reqwest(ref e) => Some(e),
+            Error::SerdeJson(ref e) => Some(e),
+            _ => None,
         }
     }
 }

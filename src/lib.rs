@@ -1,8 +1,6 @@
 #![deny(rust_2018_idioms)]
-use reqwest;
-use serde::{self, Deserialize};
-use serde_json;
 use crate::error::Error;
+use serde::{self, Deserialize};
 
 pub mod error;
 
@@ -68,8 +66,9 @@ where
             lang
         ),
     };
-    let content = reqwest::get(&url)?.text()?.replace("\\'", "'");
-    serde_json::from_str::<Quote>(content.as_str()).map_err(|e| -> Error {
+
+    let content = reqwest::blocking::get(&url)?.text()?.replace("\\'", "'");
+    serde_json::from_str::<Quote>(content.as_str()).map_err(|e| {
         eprintln!("Parse Failed.");
         eprintln!("Please report to https://github.com/equal-l2/forismatic-rs with JSON!");
         eprintln!("JSON:\n{}", content);
